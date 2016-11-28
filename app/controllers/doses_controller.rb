@@ -12,15 +12,16 @@ class DosesController < ApplicationController
 
   def new
     @dose = Dose.new
-    @ingredient = Ingredient.all
-
+    @ingredient = Ingredient.new
+    @dose.ingredient = @ingredient
   end
 
   def create
+    # create new ingredient
     @dose = @cocktail.doses.build(dose_params)
+    # link dose with ingredient
     if @dose.save
       redirect_to cocktail_path(@cocktail)
-
     else
       render :new
     end
@@ -47,6 +48,8 @@ class DosesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dose_params
-      params.require(:dose).permit(:description, :ingredient_id)
+      # params == { dose: {description: "blql", ingredient: {name: "hello"} }
+
+      params.require(:dose).permit(:description, ingredient_attributes: [:id, :name] )
     end
 end

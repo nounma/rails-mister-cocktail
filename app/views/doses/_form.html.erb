@@ -4,11 +4,14 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-    <%= simple_form_for @dose, url: cocktail_doses_path do |f| %>
+    <%= simple_form_for [ @cocktail, @dose] do |f| %>
       <%= f.error_notification %>
       <div class="form-inputs">
         <%= f.input :description, placeholder: "Quantity"%>
-         <%= f.association :ingredient %>
+
+        <%= f.simple_fields_for :ingredient do |ff| %>
+          <%= ff.input :name %>
+        <% end %>
       </div>
 
       <div class="form-actions">
